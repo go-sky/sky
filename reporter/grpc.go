@@ -19,17 +19,18 @@ import (
 	"errors"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/golang/protobuf/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
 
-	"github.com/tetratelabs/go2sky"
-	"github.com/tetratelabs/go2sky/internal/tool"
-	"github.com/tetratelabs/go2sky/reporter/grpc/common"
-	v2 "github.com/tetratelabs/go2sky/reporter/grpc/language-agent-v2"
-	"github.com/tetratelabs/go2sky/reporter/grpc/register"
+	"github.com/go-sky/sky"
+	"github.com/go-sky/sky/internal/tool"
+	"github.com/go-sky/sky/reporter/grpc/common"
+	v2 "github.com/go-sky/sky/reporter/grpc/language-agent-v2"
+	"github.com/go-sky/sky/reporter/grpc/register"
 )
 
 const (
@@ -140,12 +141,31 @@ func (r *gRPCReporter) registerService(name string) error {
 }
 
 func (r *gRPCReporter) registerInstance(name string) error {
+	var props []*common.KeyStringValuePair
+
+	if os.Getpid() > 0 {
+		kv := &common.KeyStringValuePair{
+			Key:   "process_no",
+			Value: strconv.Itoa(os.Getpid()),
+		}
+		props =  append(props,kv)
+	}
+	if hs, err := os.Hostname(); err == nil {
+		if hs != "" {
+			kv := &common.KeyStringValuePair{
+				Key:   "host_name",
+				Value: hs,
+			}
+			props = append(props, kv)
+		}
+	}
 	in := &register.ServiceInstances{
 		Instances: []*register.ServiceInstance{
 			{
 				ServiceId:    r.serviceID,
 				InstanceUUID: name,
 				Time:         tool.Millisecond(time.Now()),
+				Properties:   props,
 			},
 		},
 	}

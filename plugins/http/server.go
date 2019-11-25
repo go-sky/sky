@@ -20,10 +20,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/tetratelabs/go2sky"
-	"github.com/tetratelabs/go2sky/internal/tool"
-	"github.com/tetratelabs/go2sky/propagation"
-	"github.com/tetratelabs/go2sky/reporter/grpc/common"
+	"github.com/go-sky/sky"
+	"github.com/go-sky/sky/internal/tool"
+	"github.com/go-sky/sky/propagation"
+	"github.com/go-sky/sky/reporter/grpc/common"
 )
 
 const (

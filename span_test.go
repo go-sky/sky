@@ -19,7 +19,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/tetratelabs/go2sky/reporter/grpc/common"
+	"github.com/go-sky/sky/reporter/grpc/common"
 )
 
 func Test_defaultSpan_SetOperationName(t *testing.T) {

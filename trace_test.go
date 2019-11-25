@@ -22,7 +22,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/tetratelabs/go2sky/propagation"
+	"github.com/go-sky/sky/propagation"
 )
 
 var (
